@@ -263,7 +263,7 @@ html[data-theme="dark"] .photobook { --cp-photo-ink: var(--cp-accent-fg); --cp-p
 .photobook .venue-map { border: 0; margin-block: 24px 18px; }
 .photobook .venue-map figcaption { padding-inline: 0; font-size: 10px; color: var(--cp-text-muted); }
 .photobook .location-actions { display: grid; grid-template-columns: 1fr 1fr; }
-.photobook .location-actions a:nth-of-type(1) { grid-column: 1/-1; min-height: 48px; background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
+.photobook .location-actions a:nth-of-type(3) { grid-column: 1/-1; }
 .photobook .location-actions #copy-address { grid-column: 1/-1; border-color: transparent; background: transparent; }
 .photobook .wishes { padding: 64px 28px; }
 .photobook .guestbook { background: var(--cp-surface); padding: 32px 28px 64px; }
@@ -369,6 +369,15 @@ html[data-theme] .photobook .cover::after, html[data-theme] .photobook .cover[da
 .book-shell img, .cover, .closing, .mosaic-photo, .reel-track { touch-action: pan-x pan-y; }
 #lightbox, #lightbox img { touch-action: none; }
 .book-shell img, #lightbox img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+
+/* Closing photo: raised and enlarged so the message does not cover the couple */
+.photobook .closing { display: block; min-height: 0; }
+.photobook .closing-photo { position: relative; inset: auto; height: calc(100svh - 230px); min-height: 440px; max-height: 760px; }
+.photobook .closing-photo::after { content: ""; position: absolute; inset: auto 0 0 0; height: 32%; pointer-events: none; background: linear-gradient(180deg, rgba(27,26,25,0), #1b1a19); }
+.photobook .closing-photo img { scale: 1.15; transform-origin: 50% 100%; animation: drift 20s ease-in-out infinite alternate; }
+.photobook .closing::after { display: none; }
+.photobook .closing-message { margin-top: -28px; padding-top: 0; }
+@keyframes drift { from { transform: scale(1); } to { transform: scale(1.04); } }
 
 @media (prefers-reduced-motion: reduce) {
   .photobook .cover-photo, .photobook .closing-photo img, .calendar .wedding-day, .signature svg, .closing-message > svg, .cover-scroll, .rsvp-button { animation: none !important; }
