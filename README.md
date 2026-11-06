@@ -48,6 +48,16 @@ The selected garden portrait stays as the closing photo even when more photos ar
 The countdown below the calendar counts down to the timezone-aware wedding date,
 then changes to a thank-you message. Address copying and calendar downloads remain
 disabled until the corresponding real details exist.
+The cover fills the whole screen (`100svh`, designed around an iPhone Pro viewport of
+about 402x874) with a slow Ken Burns zoom. Its "01 / 03" photo counter and arrows are
+hidden until the cover is touched (or hovered/focused), then fade out after about three
+seconds. The bottom navigation stays hidden until you scroll past the cover. The closing
+photo and the photo viewer also fill the screen (`object-fit: cover` using each photo's
+`focus` point), so edges may be cropped on tall phones. Tiles fade in with a stagger,
+and the wedding day, hearts, and RSVP button pulse gently; all of it stops under
+`prefers-reduced-motion`.
+An RSVP section and bottom-nav link open the Microsoft Forms URL set in `rsvpUrl`.
+Responses are stored by Microsoft Forms, so the form must allow anyone to respond.
 The closing section has a "Copy link" button and, on browsers that support the Web
 Share API (most mobile browsers), a "Share" button that opens the native share sheet.
 Both share the page URL without query or hash.
@@ -129,7 +139,7 @@ repositories expose source and history; deployed website assets are downloadable
 - Review the title and description; add social sharing metadata.
 - Decide whether to keep the initial `noindex, nofollow` setting. It is not access control.
 - Never commit secrets or unapproved personal details, phone numbers, or account information.
-- Guestbooks and RSVP storage need a separate service; Pages serves static files only.
+- Guestbooks need a separate service; Pages serves static files only. RSVP uses the external Microsoft Forms link.
 
 ## Quick Validation
 

@@ -5,8 +5,9 @@ window.weddingData = {
     partnerTwo: "Jihye Park",
   },
   dateTime: "2027-02-20T18:30:00+09:00",
+  rsvpUrl: "https://forms.cloud.microsoft/r/QUKyedyipt",
   venue: {
-    name: "aT Fore Wedding Hall",
+    name: "aT Foret Wedding Hall",
     nameKo: "aT포레웨딩홀",
     address: "27 Gangnam-daero, Seocho-gu, Seoul, South Korea",
     addressKo: "서울 서초구 강남대로 27",

@@ -20,6 +20,15 @@
       return `<button class="quiet-button" type="button" disabled>${label}</button>`;
     }
   };
+  const rsvpButton = () => {
+    try {
+      const url = new URL(data.rsvpUrl);
+      if (url.protocol !== "https:") throw new Error("Invalid RSVP URL");
+      return `<a class="primary-button rsvp-button" href="${escape(url.href)}" target="_blank" rel="noopener noreferrer" aria-label="RSVP for the wedding (opens in a new tab)">${icon("send")} RSVP</a>`;
+    } catch {
+      return `<button class="primary-button rsvp-button" type="button" disabled>RSVP</button>`;
+    }
+  };
   const naverOrigin = "https://oapi.map.naver.com";
   const hasLiveMap = () => Boolean(data.venue.naverMapKeyId) && Number.isFinite(data.venue.lat) && Number.isFinite(data.venue.lng);
   const venueMap = () => {
@@ -94,8 +103,14 @@
     </section>`;
   const closingIndex = photos.findIndex((item) => item.closing);
   const closing = `<footer class="closing"><div class="closing-photo">${photo(closingIndex >= 0 ? closingIndex : photos.length - 1)}</div><div class="closing-message">${icon("heart")}<p>Thank you to everyone<br>celebrating with us.</p><span>Groom ${escape(names[0])} &amp; Bride ${escape(names[1])}</span><small>${dateLabel}</small><div class="share-actions"><button class="quiet-button" id="copy-link" type="button">${icon("link")} Copy link</button><button class="quiet-button" id="share-invite" type="button" hidden>${icon("share")} Share</button></div></div></footer>`;
-  const cover = `<section class="cover" aria-label="Invitation cover">${coverReel}<p class="cover-script" aria-hidden="true">Our Wedding</p><div class="cover-bottom"><h1><span class="cover-person"><small>Groom</small>${escape(names[0])}</span><span class="cover-join" aria-hidden="true">&amp;</span><span class="cover-person"><small>Bride</small>${escape(names[1])}</span></h1></div><p class="cover-details"><time datetime="${escape(data.dateTime)}">${escape(fullDate)}</time><span>${escape(data.venue.name || "Our wedding venue")}</span></p></section>`;
-  document.getElementById("invitation").innerHTML = `<main class="book-shell">${cover}${story}${gallery}${event}${closing}</main><nav class="book-dock" aria-label="Quick navigation"><a href="#gallery">Photos</a><a href="#event">Details</a><a href="#location">Location</a></nav><dialog id="lightbox" aria-label="Photo viewer"><div class="lightbox-bar"><span id="photo-count"></span><button type="button" class="icon-button" id="close-photo" aria-label="Close photo" title="Close">${icon("close")}</button></div><img id="large-photo" alt=""><div class="lightbox-controls"><button type="button" class="icon-button" id="prev-photo" aria-label="Previous photo" title="Previous photo">${icon("prev")}</button><button type="button" class="icon-button" id="next-photo" aria-label="Next photo" title="Next photo">${icon("next")}</button></div></dialog><div class="toast" id="toast" role="status"></div>`;
+  const cover = `<section class="cover" aria-label="Invitation cover">${coverReel}<p class="cover-script" aria-hidden="true">Our Wedding</p><div class="cover-bottom"><h1><span class="cover-person"><small>Groom</small>${escape(names[0])}</span><span class="cover-join" aria-hidden="true">&amp;</span><span class="cover-person"><small>Bride</small>${escape(names[1])}</span></h1></div><p class="cover-details"><time datetime="${escape(data.dateTime)}">${escape(fullDate)}</time><span>${escape(data.venue.name || "Our wedding venue")}</span></p><a class="cover-scroll" href="#story" aria-label="Scroll down to the invitation">${icon("down")}</a></section>`;
+  const rsvp = `
+    <section class="section rsvp" id="rsvp">
+      ${heading("Will You Join Us?", "RSVP")}
+      <p class="invitation-copy">Kindly let us know if you can celebrate with us.\nIt only takes a minute.</p>
+      ${rsvpButton()}
+    </section>`;
+  document.getElementById("invitation").innerHTML = `<main class="book-shell">${cover}${story}${gallery}${event}${rsvp}${closing}</main><nav class="book-dock" aria-label="Quick navigation"><a href="#gallery">Photos</a><a href="#event">Details</a><a href="#location">Location</a><a href="#rsvp">RSVP</a></nav><dialog id="lightbox" aria-label="Photo viewer"><div class="lightbox-bar"><span id="photo-count"></span><button type="button" class="icon-button" id="close-photo" aria-label="Close photo" title="Close">${icon("close")}</button></div><img id="large-photo" alt=""><div class="lightbox-controls"><button type="button" class="icon-button" id="prev-photo" aria-label="Previous photo" title="Previous photo">${icon("prev")}</button><button type="button" class="icon-button" id="next-photo" aria-label="Next photo" title="Next photo">${icon("next")}</button></div></dialog><div class="toast" id="toast" role="status"></div>`;
   {
     const countdown = document.querySelector(".wedding-countdown");
     if (countdown) {
@@ -158,8 +173,19 @@
       });
       resize.observe(track);
       update();
+      if (element.classList.contains("cover-reel")) {
+        let hideTimer;
+        const showControls = () => {
+          element.classList.add("is-active");
+          clearTimeout(hideTimer);
+          hideTimer = setTimeout(() => element.classList.remove("is-active"), 2800);
+        };
+        element.closest(".cover").addEventListener("pointerdown", showControls, {passive: true});
+        track.addEventListener("scroll", () => { if (element.classList.contains("is-active")) showControls(); }, {passive: true});
+      }
     });
-    const revealElements = document.querySelectorAll(".book-shell .section-heading, .book-shell .invitation-copy, .book-shell .signature, .album-heading, .closing-message");
+    document.querySelectorAll(".mosaic-photo").forEach((tile, index) => tile.style.setProperty("--i", String(index % 3)));
+    const revealElements = document.querySelectorAll(".book-shell .section-heading, .book-shell .invitation-copy, .book-shell .signature, .book-shell .rsvp-button, .album-heading, .closing-message, .mosaic-photo");
     if (!reducedMotion.matches && "IntersectionObserver" in window) {
       const reveal = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -180,6 +206,9 @@
     let scrollScheduled = false;
     const updateReading = () => {
       scrollScheduled = false;
+      const hideDock = scrollY < innerHeight * 0.55;
+      dock.classList.toggle("is-hidden", hideDock);
+      dock.inert = hideDock;
       const available = document.documentElement.scrollHeight - innerHeight;
       dock.style.setProperty("--reading-progress", String(available > 0 ? Math.min(1, Math.max(0, scrollY / available)) : 0));
       let current = -1;
@@ -234,6 +263,7 @@
     selectedPhoto = (index + photos.length) % photos.length;
     document.getElementById("large-photo").src = new URL(photos[selectedPhoto].src, location.href).href;
     document.getElementById("large-photo").alt = photos[selectedPhoto].alt || "Our photo";
+    document.getElementById("large-photo").style.objectPosition = [0, 1].map((axis) => `${Number.isFinite(photos[selectedPhoto].focus?.[axis]) ? photos[selectedPhoto].focus[axis] : 50}%`).join(" ");
     document.getElementById("photo-count").textContent = `${String(selectedPhoto + 1).padStart(2, "0")} / ${String(photos.length).padStart(2, "0")}`;
   }
   document.querySelectorAll("[data-photo]").forEach((button) => button.addEventListener("click", () => {
