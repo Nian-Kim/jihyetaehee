@@ -48,6 +48,9 @@ The selected garden portrait stays as the closing photo even when more photos ar
 The countdown below the calendar counts down to the timezone-aware wedding date,
 then changes to a thank-you message. Address copying and calendar downloads remain
 disabled until the corresponding real details exist.
+The closing section has a "Copy link" button and, on browsers that support the Web
+Share API (most mobile browsers), a "Share" button that opens the native share sheet.
+Both share the page URL without query or hash.
 The invitation includes Naver Map, Google Maps, and Kakao Map links, configured via
 `naverMapUrl`, `googleMapUrl`, and `kakaoMapUrl`. The visible map is a live Naver map
 (Naver Cloud Maps Web Dynamic Map) centered on `venue.lat` / `venue.lng`. It needs a

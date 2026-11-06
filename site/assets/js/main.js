@@ -35,7 +35,7 @@
     } catch { return ""; }
   };
   const icon = (name) => {
-    const icons = { heart: "Heart", arrow: "ArrowUpRight", down: "ArrowDown", expand: "Maximize2", close: "X", prev: "ChevronLeft", next: "ChevronRight", pin: "MapPin", copy: "Copy", calendar: "CalendarDays", send: "Send", trash: "Trash2" };
+    const icons = { heart: "Heart", arrow: "ArrowUpRight", down: "ArrowDown", expand: "Maximize2", close: "X", prev: "ChevronLeft", next: "ChevronRight", pin: "MapPin", copy: "Copy", calendar: "CalendarDays", send: "Send", trash: "Trash2", link: "Link", share: "Share2" };
     return lucide.createElement(lucide.icons[icons[name] || "Heart"], {width: 20, height: 20, "stroke-width": 1.5, "aria-hidden": "true"}).outerHTML;
   };
   const photo = (index, className = "", eager = false) => {
@@ -53,7 +53,7 @@
   const year = Number(part("year"));
   const month = Number(part("month"));
   const day = Number(part("day"));
-  const dateLabel = validDate ? `${year}.${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}` : "Date to be confirmed";
+  const dateLabel = validDate ? `${String(month).padStart(2, "0")}.${String(day).padStart(2, "0")}.${year}` : "Date to be confirmed";
   const fullDate = validDate ? new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric", weekday: "long", hour: "numeric", minute: "2-digit", hour12: true }).format(date).replace(/,? at /, " at ") : "Please check the ceremony date and time";
   document.title = title;
   document.body.className = "photobook";
@@ -61,13 +61,13 @@
   const story = `
     <section class="section story" id="story">
       ${heading("You're Invited", "With love")}
-      <p class="invitation-copy">${escape(data.greeting || "Having walked side by side,\ncaring for one another,\nwe are about to begin our life as husband and wife.\n\nWe would be truly delighted\nif you could join us and celebrate\nthis new beginning together.")}</p>
+      <p class="invitation-copy">${escape(data.greeting || "Two people who care deeply for each other\nare beginning a new chapter together.\n\nWe would be honored to have you\njoin us and celebrate our wedding day.")}</p>
       <div class="signature"><span><small>Groom</small>${escape(names[0])}</span>${icon("heart")}<span><small>Bride</small>${escape(names[1])}</span></div>
     </section>`;
   const featured = photos.map((item, index) => item.cover ? index : -1).filter((index) => index >= 0);
   const coverPhotos = featured.length ? featured : [0];
   const coverReel = `<div class="photo-reel cover-reel" data-reel="cover"   role="region" aria-roledescription="carousel" aria-label="Cover photos"><div class="reel-track" id="cover-track" tabindex="0" aria-label="Swipe through cover photos">${coverPhotos.map((index, position) => `<div class="reel-slide" data-tone="${photos[index].coverTone === "light" ? "light" : "dark"}" role="group" aria-roledescription="slide" aria-label="${position + 1} / ${coverPhotos.length}">${photo(index, "cover-photo", position === 0)}</div>`).join("")}</div><div class="reel-controls"><button class="icon-button reel-prev" type="button" aria-label="Previous cover photo" title="Previous photo" aria-controls="cover-track">${icon("prev")}</button><span class="reel-count" aria-live="polite" aria-atomic="true">01 / ${String(coverPhotos.length).padStart(2, "0")}</span><button class="icon-button reel-next" type="button" aria-label="Next cover photo" title="Next photo" aria-controls="cover-track">${icon("next")}</button></div></div>`;
-    const gallery = `<section class="section gallery album" id="gallery"><header class="album-heading"><h2>Our Moments</h2><p>Through every season,<br>and now, toward the same tomorrow.</p></header><div class="mosaic-gallery">${photos.map((item, index) => `<button class="mosaic-photo" type="button" data-photo="${index}" aria-label="Enlarge photo ${index + 1}" aria-haspopup="dialog">${photo(index)}</button>`).join("")}</div></section>`;
+    const gallery = `<section class="section gallery album" id="gallery"><header class="album-heading"><h2>Our Moments</h2><p>Together through every season,<br>and now, toward the same tomorrow.</p></header><div class="mosaic-gallery">${photos.map((item, index) => `<button class="mosaic-photo" type="button" data-photo="${index}" aria-label="Enlarge photo ${index + 1}" aria-haspopup="dialog">${photo(index)}</button>`).join("")}</div></section>`;
   let calendar = "";
   if (validDate) {
     const offset = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
@@ -79,7 +79,7 @@
       ${heading("Ceremony Details")}
       <p class="event-date">${dateLabel}</p><p>${escape(fullDate)}</p>
       ${calendar}
-      ${validDate ? `<div class="wedding-countdown" role="timer" aria-live="off" aria-label="Time remaining until the wedding"><div id="countdown-remaining"><p><strong id="countdown-days">0</strong> days to go</p><div class="countdown-clock"><span><b id="countdown-hours">00</b>hours</span><span><b id="countdown-minutes">00</b>min</span><span><b id="countdown-seconds">00</b>sec</span></div></div><p id="countdown-complete" hidden>Thank you for celebrating with us</p></div>` : ""}
+      ${validDate ? `<div class="wedding-countdown" role="timer" aria-live="off" aria-label="Time remaining until the wedding"><div id="countdown-remaining"><p><strong id="countdown-days">0</strong> days to go</p><div class="countdown-clock"><span><b id="countdown-hours">00</b>hrs</span><span><b id="countdown-minutes">00</b>min</span><span><b id="countdown-seconds">00</b>sec</span></div></div><p id="countdown-complete" hidden>Thank you for celebrating with us</p></div>` : ""}
       <button type="button" class="quiet-button" id="save-date" ${!data.dateTime || !validDate ? "disabled" : ""}>${icon("calendar")} Add to calendar</button>
     </section>
     <section class="section location" id="location">
@@ -93,7 +93,7 @@
       <div class="location-actions">${mapLink("Naver Map", data.venue.naverMapUrl)}${mapLink("Google Maps", data.venue.googleMapUrl)}${mapLink("Kakao Map", data.venue.kakaoMapUrl)}<button class="quiet-button" id="copy-address" type="button" ${!data.venue.address ? "disabled" : ""}>${icon("copy")} Copy address</button></div>
     </section>`;
   const closingIndex = photos.findIndex((item) => item.closing);
-  const closing = `<footer class="closing"><div class="closing-photo">${photo(closingIndex >= 0 ? closingIndex : photos.length - 1)}</div><div class="closing-message">${icon("heart")}<p>Thank you to everyone<br>who celebrates with us.</p><span>Groom ${escape(names[0])} &amp; Bride ${escape(names[1])}</span><small>${dateLabel}</small></div></footer>`;
+  const closing = `<footer class="closing"><div class="closing-photo">${photo(closingIndex >= 0 ? closingIndex : photos.length - 1)}</div><div class="closing-message">${icon("heart")}<p>Thank you to everyone<br>celebrating with us.</p><span>Groom ${escape(names[0])} &amp; Bride ${escape(names[1])}</span><small>${dateLabel}</small><div class="share-actions"><button class="quiet-button" id="copy-link" type="button">${icon("link")} Copy link</button><button class="quiet-button" id="share-invite" type="button" hidden>${icon("share")} Share</button></div></div></footer>`;
   const cover = `<section class="cover" aria-label="Invitation cover">${coverReel}<p class="cover-script" aria-hidden="true">Our Wedding</p><div class="cover-bottom"><h1><span class="cover-person"><small>Groom</small>${escape(names[0])}</span><span class="cover-join" aria-hidden="true">&amp;</span><span class="cover-person"><small>Bride</small>${escape(names[1])}</span></h1></div><p class="cover-details"><time datetime="${escape(data.dateTime)}">${escape(fullDate)}</time><span>${escape(data.venue.name || "Our wedding venue")}</span></p></section>`;
   document.getElementById("invitation").innerHTML = `<main class="book-shell">${cover}${story}${gallery}${event}${closing}</main><nav class="book-dock" aria-label="Quick navigation"><a href="#gallery">Photos</a><a href="#event">Details</a><a href="#location">Location</a></nav><dialog id="lightbox" aria-label="Photo viewer"><div class="lightbox-bar"><span id="photo-count"></span><button type="button" class="icon-button" id="close-photo" aria-label="Close photo" title="Close">${icon("close")}</button></div><img id="large-photo" alt=""><div class="lightbox-controls"><button type="button" class="icon-button" id="prev-photo" aria-label="Previous photo" title="Previous photo">${icon("prev")}</button><button type="button" class="icon-button" id="next-photo" aria-label="Next photo" title="Next photo">${icon("next")}</button></div></dialog><div class="toast" id="toast" role="status"></div>`;
   {
@@ -256,6 +256,19 @@
     const distance = event.changedTouches[0].clientX - startX;
     if (Math.abs(distance) > 60) showPhoto(selectedPhoto + (distance < 0 ? 1 : -1));
   }, {passive: true});
+  const shareUrl = location.href.split(/[?#]/)[0];
+  document.getElementById("copy-link").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(shareUrl); notify("Link copied."); }
+    catch { notify("Couldn't copy. Please copy the link from your browser's address bar."); }
+  });
+  if (navigator.share) {
+    const shareButton = document.getElementById("share-invite");
+    shareButton.hidden = false;
+    shareButton.addEventListener("click", async () => {
+      try { await navigator.share({ title, text: `You're invited to ${title} on ${fullDate}.`, url: shareUrl }); }
+      catch (error) { if (error.name !== "AbortError") notify("Sharing isn't available. Try Copy link instead."); }
+    });
+  }
   document.getElementById("copy-address").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText([data.venue.addressKo, data.venue.address].filter(Boolean).join("\n")); notify("Address copied."); }
     catch { notify("Couldn't copy. Please select the address above manually."); }

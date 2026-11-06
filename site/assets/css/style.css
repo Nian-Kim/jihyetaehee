@@ -137,6 +137,9 @@ textarea { resize: vertical; min-height: 100px; }
 .closing span, .closing small { display: block; }
 .closing span { font-size: 16px; }
 .closing small { margin-top: 10px; font-size: 9px; color: var(--cp-text-muted); }
+.share-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.share-actions .quiet-button { min-width: 140px; }
+.share-actions [hidden] { display: none; }
 .book-dock { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; width: min(100%,560px); background: var(--cp-panel-strong); border-top: 1px solid var(--cp-border); z-index: 4; padding: 6px 20px max(6px,env(safe-area-inset-bottom)); }
 .book-dock a { display: inline-flex; justify-content: center; flex: 1; align-items: center; min-height: 44px; white-space: nowrap; padding: 8px 12px; font-size: 12px; }
 .book-dock a + a { border-left: 1px solid var(--cp-border); }

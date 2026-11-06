@@ -8,9 +8,9 @@ window.weddingData = {
   venue: {
     name: "aT Fore Wedding Hall",
     nameKo: "aT포레웨딩홀",
-    address: "27 Gangnam-daero, Seocho-gu, Seoul",
+    address: "27 Gangnam-daero, Seocho-gu, Seoul, South Korea",
     addressKo: "서울 서초구 강남대로 27",
-    transit: "Subway: Shinbundang Line, Yangjae Citizen's Forest Station, Exit 4 (about 60 m)",
+    transit: "Subway: Shinbundang Line, Yangjae Citizen's Forest Station, Exit 4 (a short walk)",
     lat: 37.46835,
     lng: 127.03902,
     // Public Naver Cloud Maps "ncpKeyId" (Web Dynamic Map). Leave empty to show the static fallback map.
