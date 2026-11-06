@@ -29,8 +29,9 @@ Use `?scoutTheme=light` or `?scoutTheme=dark` to choose a theme.
 The page has no design toolbar, sample notices, or initial monogram.
 Reference-inspired typography pairs MaruBuri Korean text with Allura script:
 "Our Wedding" on the cover and "With love" above the invitation. Names and
-groom/bride labels sit below the photograph; essential details remain in Korean.
-Korean invitation wording identifies the groom and bride on the cover, invitation, and closing.
+groom/bride labels sit below the photograph. The page is entirely in English for
+international guests; the venue's Korean name and address are shown beside the
+English ones (and both are copied by "Copy address") for taxis and local maps.
 
 Wedding content is configured in [site/assets/js/wedding-data.js](site/assets/js/wedding-data.js).
 The cover uses native horizontal scroll snapping for touch navigation, previous/next
@@ -47,11 +48,14 @@ The selected garden portrait stays as the closing photo even when more photos ar
 The countdown below the calendar counts down to the timezone-aware wedding date,
 then changes to a thank-you message. Address copying and calendar downloads remain
 disabled until the corresponding real details exist.
-The invitation includes Naver Map and Kakao Map links, configured via `naverMapUrl`
-and `kakaoMapUrl`. Naver currently searches for the full venue name; Kakao links to
-the verified place listing `2107641562`. The page shows a real, static Kakao map
-from its official HTML export. Clicking it opens the venue listing; in-page pan/zoom
-is not provided. The external map needs internet access and has a failure fallback.
+The invitation includes Naver Map, Google Maps, and Kakao Map links, configured via
+`naverMapUrl`, `googleMapUrl`, and `kakaoMapUrl`. The visible map is a live Naver map
+(Naver Cloud Maps Web Dynamic Map) centered on `venue.lat` / `venue.lng`. It needs a
+public `ncpKeyId` in `venue.naverMapKeyId`; create an Application with the "Maps >
+Web Dynamic Map" service in the Naver Cloud console and register
+`https://nian-kim.github.io` as its Web service URL. While `naverMapKeyId` is empty,
+the page falls back to the static Kakao map image, which links to place `2107641562`.
+The external maps need internet access and show a failure message if they cannot load.
 
 The local-only guestbook and unfinished bank-account, public-transport, and parking
 sections have been removed, including their placeholder text. Existing browser-local
@@ -118,7 +122,7 @@ repositories expose source and history; deployed website assets are downloadable
 ## Before Publishing the Final Invitation
 
 - Confirm photo order and permission to publish the supplied photos; review image metadata and unused assets before any public upload.
-- Finalize the photobook design and confirm the Korean invitation wording.
+- Finalize the photobook design and confirm the English invitation wording and name spellings.
 - Review the title and description; add social sharing metadata.
 - Decide whether to keep the initial `noindex, nofollow` setting. It is not access control.
 - Never commit secrets or unapproved personal details, phone numbers, or account information.
