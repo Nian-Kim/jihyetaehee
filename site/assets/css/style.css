@@ -263,7 +263,7 @@ html[data-theme="dark"] .photobook { --cp-photo-ink: var(--cp-accent-fg); --cp-p
 .photobook .venue-map { border: 0; margin-block: 24px 18px; }
 .photobook .venue-map figcaption { padding-inline: 0; font-size: 10px; color: var(--cp-text-muted); }
 .photobook .location-actions { display: grid; grid-template-columns: 1fr 1fr; }
-.photobook .location-actions a:nth-of-type(3) { grid-column: 1/-1; }
+.photobook .location-actions a:nth-of-type(1) { grid-column: 1/-1; min-height: 48px; background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
 .photobook .location-actions #copy-address { grid-column: 1/-1; border-color: transparent; background: transparent; }
 .photobook .wishes { padding: 64px 28px; }
 .photobook .guestbook { background: var(--cp-surface); padding: 32px 28px 64px; }
