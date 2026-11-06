@@ -185,6 +185,7 @@
           hideTimer = setTimeout(() => element.classList.remove("is-active"), 800);
         };
         element.closest(".cover").addEventListener("pointerdown", showControls, {passive: true});
+        element.closest(".cover").addEventListener("pointermove", (event) => { if (event.pointerType === "mouse") showControls(); }, {passive: true});
         track.addEventListener("scroll", () => { if (element.classList.contains("is-active")) showControls(); }, {passive: true});
       }
     });
