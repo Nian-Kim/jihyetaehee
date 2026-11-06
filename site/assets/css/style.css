@@ -374,7 +374,7 @@ html[data-theme] .photobook .cover::after, html[data-theme] .photobook .cover[da
 .photobook .closing { display: block; min-height: 0; }
 .photobook .closing-photo { position: relative; inset: auto; height: calc(100svh - 230px); min-height: 440px; max-height: 760px; }
 .photobook .closing-photo::after { content: ""; position: absolute; inset: auto 0 0 0; height: 32%; pointer-events: none; background: linear-gradient(180deg, rgba(27,26,25,0), #1b1a19); }
-.photobook .closing-photo img { scale: 1.15; transform-origin: 50% 100%; animation: drift 20s ease-in-out infinite alternate; }
+.photobook .closing-photo img { scale: 1.18; translate: 0 -5%; transform-origin: 50% 100%; animation: drift 20s ease-in-out infinite alternate; }
 .photobook .closing::after { display: none; }
 .photobook .closing-message { margin-top: -28px; padding-top: 0; }
 @keyframes drift { from { transform: scale(1); } to { transform: scale(1.04); } }
@@ -384,6 +384,9 @@ html[data-theme] .photobook .cover::after, html[data-theme] .photobook .cover[da
 @media (min-width: 700px) {
   html[data-theme] .photobook .cover { width: 100vw; margin-left: calc(50% - 50vw); }
   .photobook .cover-photo { object-position: 50% 26% !important; }
+  .photobook .closing { width: 100vw; margin-left: calc(50% - 50vw); }
+  .photobook .closing-photo { height: calc(100svh - 200px); min-height: 360px; max-height: none; }
+  .photobook .closing-photo img { scale: 1; translate: none; object-position: 50% 28% !important; }
   .photobook .cover .cover-script { font-size: 96px; }
   .photobook .cover-bottom h1 { font-size: 44px; gap: 14px 28px; }
   .photobook .cover-person small { font-size: 13px; }
