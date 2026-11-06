@@ -31,9 +31,13 @@
   };
   const naverOrigin = "https://oapi.map.naver.com";
   const hasLiveMap = () => Boolean(data.venue.naverMapKeyId) && Number.isFinite(data.venue.lat) && Number.isFinite(data.venue.lng);
+  const hasKakaoLive = () => Boolean(data.venue.kakaoJsKey) && Number.isFinite(data.venue.lat) && Number.isFinite(data.venue.lng);
   const venueMap = () => {
     if (hasLiveMap()) {
       return `<figure class="venue-map"><div id="naver-map" class="venue-map-live" role="region" aria-label="Map of ${escape(data.venue.name)} on Naver Map"></div><figcaption><span>Naver Map</span><a href="${escape(new URL(data.venue.naverMapUrl).href)}" target="_blank" rel="noopener noreferrer">Open larger map ${icon("arrow")}</a></figcaption></figure>`;
+    }
+    if (hasKakaoLive()) {
+      return `<figure class="venue-map"><div id="kakao-map" class="venue-map-live" role="region" aria-label="Map of ${escape(data.venue.name)} on Kakao Map"></div><figcaption><span>Kakao Map</span><a href="${escape(new URL(data.venue.kakaoMapUrl).href)}" target="_blank" rel="noopener noreferrer">Open larger map ${icon("arrow")}</a></figcaption></figure>`;
     }
     if (!data.venue.mapImageUrl) return "";
     try {
@@ -243,6 +247,23 @@
   const photoArea = ".cover, .closing, .mosaic-photo, #lightbox";
   document.addEventListener("gesturestart", (event) => { if (event.target.closest?.(photoArea)) event.preventDefault(); });
   document.addEventListener("touchmove", (event) => { if (event.touches.length > 1 && event.target.closest?.(photoArea)) event.preventDefault(); }, {passive: false});
+  const kakaoMap = document.getElementById("kakao-map");
+  if (kakaoMap) {
+    const mapFailed = () => { kakaoMap.textContent = "The map could not be loaded. Please use the map links below."; kakaoMap.classList.add("is-error"); };
+    const script = document.createElement("script");
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(data.venue.kakaoJsKey)}&autoload=false`;
+    script.onerror = mapFailed;
+    script.onload = () => {
+      try {
+        kakao.maps.load(() => {
+          const position = new kakao.maps.LatLng(data.venue.lat, data.venue.lng);
+          const map = new kakao.maps.Map(kakaoMap, { center: position, level: 3 });
+          new kakao.maps.Marker({ position, map });
+        });
+      } catch { mapFailed(); }
+    };
+    document.head.append(script);
+  }
   const mapImage = document.getElementById("venue-map-image");
   if (mapImage) {
     const mapError = () => {

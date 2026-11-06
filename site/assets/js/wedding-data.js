@@ -16,6 +16,8 @@ window.weddingData = {
     lng: 127.03902,
     // Public Naver Cloud Maps "ncpKeyId" (Web Dynamic Map). Leave empty to show the static fallback map.
     naverMapKeyId: "",
+    // Kakao Developers "JavaScript key" with https://nian-kim.github.io registered as a Web domain. Leave empty for the static map.
+    kakaoJsKey: "",
     mapUrl: "",
     naverMapUrl: "https://map.naver.com/p/search/aT%ED%8F%AC%EB%A0%88%EC%9B%A8%EB%94%A9%ED%99%80",
     googleMapUrl: "https://www.google.com/maps/search/?api=1&query=aT%20Center%2C%2027%20Gangnam-daero%2C%20Seocho-gu%2C%20Seoul",

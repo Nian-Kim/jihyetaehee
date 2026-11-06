@@ -69,6 +69,10 @@ public `ncpKeyId` in `venue.naverMapKeyId`; create an Application with the "Maps
 Web Dynamic Map" service in the Naver Cloud console and register
 `https://nian-kim.github.io` as its Web service URL. While `naverMapKeyId` is empty,
 the page falls back to the static Kakao map image, which links to place `2107641562`.
+Alternatively set `venue.kakaoJsKey` (a Kakao Developers JavaScript key with
+`https://nian-kim.github.io` registered as a Web domain and Kakao Maps turned ON) to
+show a live Kakao map; Naver takes precedence if both keys are set. Kakao's free quota
+applies to the first Kakao Maps-enabled app per developer account and needs no billing.
 The external maps need internet access and show a failure message if they cannot load.
 
 The local-only guestbook and unfinished bank-account, public-transport, and parking
