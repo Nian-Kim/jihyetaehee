@@ -50,12 +50,13 @@ then changes to a thank-you message. Address copying and calendar downloads rema
 disabled until the corresponding real details exist.
 The cover fills the whole screen (`100svh`, designed around an iPhone Pro viewport of
 about 402x874) with a slow Ken Burns zoom. Its "01 / 03" photo counter and arrows are
-hidden until the cover is touched (or hovered/focused), then fade out after about three
-seconds. The bottom navigation stays hidden until you scroll past the cover. The closing
+hidden until the cover is touched (or hovered/focused), then fade out after 0.8 seconds. The bottom navigation stays hidden until you scroll past the cover. The closing
 photo and the photo viewer also fill the screen (`object-fit: cover` using each photo's
 `focus` point), so edges may be cropped on tall phones. Tiles fade in with a stagger,
 and the wedding day, hearts, and RSVP button pulse gently; all of it stops under
-`prefers-reduced-motion`.
+`prefers-reduced-motion`. Photos cannot be pinch-zoomed or double-tap-zoomed on phones
+(`touch-action` plus `gesturestart`/multi-touch handlers); tapping a gallery tile still
+opens the full-screen viewer.
 An RSVP section and bottom-nav link open the Microsoft Forms URL set in `rsvpUrl`.
 Responses are stored by Microsoft Forms, so the form must allow anyone to respond.
 The closing section has a "Copy link" button and, on browsers that support the Web

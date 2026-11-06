@@ -178,7 +178,7 @@
         const showControls = () => {
           element.classList.add("is-active");
           clearTimeout(hideTimer);
-          hideTimer = setTimeout(() => element.classList.remove("is-active"), 2800);
+          hideTimer = setTimeout(() => element.classList.remove("is-active"), 800);
         };
         element.closest(".cover").addEventListener("pointerdown", showControls, {passive: true});
         track.addEventListener("scroll", () => { if (element.classList.contains("is-active")) showControls(); }, {passive: true});
@@ -240,6 +240,9 @@
     };
     document.head.append(script);
   }
+  const photoArea = ".cover, .closing, .mosaic-photo, #lightbox";
+  document.addEventListener("gesturestart", (event) => { if (event.target.closest?.(photoArea)) event.preventDefault(); });
+  document.addEventListener("touchmove", (event) => { if (event.touches.length > 1 && event.target.closest?.(photoArea)) event.preventDefault(); }, {passive: false});
   const mapImage = document.getElementById("venue-map-image");
   if (mapImage) {
     const mapError = () => {

@@ -316,14 +316,14 @@ html[data-theme] .photobook .cover::after, html[data-theme] .photobook .cover[da
 .photobook .cover-reel .reel-slide { overflow: hidden; }
 .photobook .cover-photo { height: 100%; animation: kenburns 18s ease-in-out infinite alternate; will-change: transform; }
 .photobook .cover .cover-script { color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.45); top: max(28px, env(safe-area-inset-top)); animation: drop-in 1.2s .15s cubic-bezier(.2,.7,.2,1) both; }
-.photobook .cover-bottom { position: relative; z-index: 2; padding: 0 24px 10px; color: #fff; pointer-events: none; animation: enter 1s .35s cubic-bezier(.2,.7,.2,1) both; }
+.photobook .cover-bottom { position: relative; inset: auto; z-index: 2; padding: 0 24px 10px; color: #fff; pointer-events: none; animation: enter 1s .35s cubic-bezier(.2,.7,.2,1) both; }
 .photobook .cover-bottom h1 { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 10px 14px; font-size: clamp(22px, 6.4vw, 30px); text-shadow: 0 2px 14px rgba(0,0,0,.5); }
 .photobook .cover-person small { color: rgba(255,255,255,.78); }
 .photobook .cover-bottom h1 .cover-join { flex: none; width: auto; height: auto; margin: 0 0 2px; background: none; font: 400 1.5em/1 "Allura", cursive; color: #fff; }
 .photobook .cover-details { position: relative; z-index: 2; padding: 14px 24px calc(76px + env(safe-area-inset-bottom)); border: 0; color: rgba(255,255,255,.92); pointer-events: none; text-shadow: 0 1px 10px rgba(0,0,0,.5); animation: enter 1s .6s cubic-bezier(.2,.7,.2,1) both; }
 .photobook .cover-details span { color: rgba(255,255,255,.78); }
 .photobook .cover-scroll { position: absolute; z-index: 3; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); margin-left: -22px; color: #fff; animation: bounce 2s 1.6s ease-in-out infinite; }
-.photobook .cover-reel .reel-controls { z-index: 3; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); width: 132px; height: 40px; color: #fff; background: rgba(20,20,20,.62); border-radius: 20px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .35s ease, transform .35s ease; }
+.photobook .cover-reel .reel-controls { z-index: 3; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom)); width: 132px; height: 40px; color: #fff; background: rgba(20,20,20,.62); border-radius: 20px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
 .photobook .cover-reel.is-active .reel-controls, .photobook .cover-reel:focus-within .reel-controls { opacity: 1; transform: none; pointer-events: auto; }
 @media (hover: hover) { .photobook .cover-reel:hover .reel-controls { opacity: 1; transform: none; pointer-events: auto; } }
 .photobook .cover-reel .reel-controls .icon-button { width: 40px; height: 40px; }
@@ -364,6 +364,11 @@ html[data-theme] .photobook .cover::after, html[data-theme] .photobook .cover[da
 .lightbox-bar { position: absolute; z-index: 2; top: 0; left: 0; right: 0; padding: max(8px, env(safe-area-inset-top)) 12px 24px 20px; background: linear-gradient(rgba(0,0,0,.55), transparent); }
 .lightbox-controls { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; padding: 24px 0 max(12px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, rgba(0,0,0,.55)); }
 .lightbox-bar .icon-button, .lightbox-controls .icon-button { color: #fff; }
+
+/* Photos cannot be pinch-zoomed or double-tap-zoomed */
+.book-shell img, .cover, .closing, .mosaic-photo, .reel-track { touch-action: pan-x pan-y; }
+#lightbox, #lightbox img { touch-action: none; }
+.book-shell img, #lightbox img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .photobook .cover-photo, .photobook .closing-photo img, .calendar .wedding-day, .signature svg, .closing-message > svg, .cover-scroll, .rsvp-button { animation: none !important; }
